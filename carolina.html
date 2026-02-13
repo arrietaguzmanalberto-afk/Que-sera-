@@ -88,39 +88,30 @@
         canvas { position: absolute; top: 0; left: 0; z-index: 310; }
         canvas { position: absolute; top: 0; left: 0; z-index: 310; }
 
-      /* AJUSTES PARA CELULAR CORREGIDOS */
+     /* AJUSTES PARA CELULAR: UNA SOLA FOTO */
         @media (max-width: 600px) {
-            body { overflow-y: auto !important; } /* Permite bajar si el contenido es largo */
+            body { overflow: hidden !important; } /* Bloquea el scroll para que se sienta como App */
             
-            h1 { font-size: 1.6em !important; margin-top: 20px !important; }
-            .mensaje-p { font-size: 1em !important; }
-            
-            .galeria-principal { 
-                flex-direction: column; 
-                align-items: center; 
-                gap: 8px; 
-                margin: 10px 0 !important;
+            h1 { font-size: 1.5em !important; margin-top: 15px !important; }
+            .mensaje-p { font-size: 0.9em !important; margin-bottom: 10px !important; }
+
+            /* ESCONDE LA SEGUNDA Y TERCERA FOTO EN CELULAR */
+            .galeria-principal img:nth-child(2),
+            .galeria-principal img:nth-child(3) {
+                display: none !important;
             }
-            /* Fotos más pequeñas para que quepan mejor */
+
             .galeria-principal img { 
-                width: 120px !important; 
-                height: 160px !important; 
+                width: 160px !important; 
+                height: 200px !important; 
+                margin: 0 auto !important;
             }
 
-            h2 { font-size: 1.4em !important; margin: 10px 0 !important; }
-
-            .botones { margin-top: 10px !important; margin-bottom: 40px !important; }
-            .si { padding: 12px 30px !important; font-size: 1.1em !important; }
-
-            video { 
-                width: 85% !important; 
-                max-width: 260px !important; 
-            }
-
-            .floating-img {
-                width: 60px !important;
-                height: 85px !important;
-            }
+            h2 { font-size: 1.3em !important; margin: 15px 0 !important; }
+            .botones { margin-top: 5px !important; }
+            
+            video { width: 85% !important; max-width: 250px !important; }
+            .floating-img { width: 60px !important; height: 85px !important; }
         }
         </style>
 </head>
@@ -253,4 +244,5 @@
 </body>
 
 </html>
+
 
