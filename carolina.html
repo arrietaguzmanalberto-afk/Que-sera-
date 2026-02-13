@@ -86,6 +86,33 @@
         }
 
         canvas { position: absolute; top: 0; left: 0; z-index: 310; }
+        canvas { position: absolute; top: 0; left: 0; z-index: 310; }
+
+        /* AJUSTES PARA CELULAR */
+        @media (max-width: 600px) {
+            h1 { font-size: 1.8em !important; }
+            .mensaje-p { font-size: 1.1em !important; }
+            
+            .galeria-principal { 
+                flex-direction: column; 
+                align-items: center; 
+                gap: 10px; 
+            }
+            .galeria-principal img { 
+                width: 140px !important; 
+                height: 180px !important; 
+            }
+
+            video { 
+                width: 90% !important; 
+                max-width: 280px !important; 
+            }
+
+            .floating-img {
+                width: 70px !important;
+                height: 100px !important;
+            }
+        }
     </style>
 </head>
 <body>
@@ -215,4 +242,5 @@
     }
 </script>
 </body>
+
 </html>
