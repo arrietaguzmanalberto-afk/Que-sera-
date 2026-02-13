@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Para mi Negrita ❤️</title>
+    <style>
+        body {
+            margin: 0; padding: 0;
+            font-family: 'Segoe UI', sans-serif;
+            background: #050505; color: white;
+            text-align: center; overflow: hidden;
+            height: 100vh;
+        }
+
+        #pantalla-inicio {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: black; z-index: 2000;
+            display: flex; flex-direction: column; justify-content: center; align-items: center;
+        }
+
+        .btn-entrar { font-size: 70px; background: none; border: none; cursor: pointer; animation: latido 1.2s infinite; }
+        @keyframes latido { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.3); } }
+
+        .stars { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; background: radial-gradient(ellipse at bottom, #1B2735 0%, #090A0F 100%); }
+
+        /* Capa de elementos flotantes */
+        .floating {
+            position: fixed; bottom: -150px;
+            user-select: none; pointer-events: none;
+            z-index: 1000;
+            animation: floatUp 8s linear infinite;
+        }
+
+        .floating-img {
+            width: 110px; height: 150px;
+            object-fit: cover; border-radius: 12px;
+            border: 2px solid #ff85a2;
+            box-shadow: 0 0 20px rgba(255, 255, 255, 0.5);
+        }
+
+        @keyframes floatUp {
+            0% { transform: translateY(0) rotate(0deg); opacity: 0; }
+            10% { opacity: 0.6; }
+            90% { opacity: 0.6; }
+            100% { transform: translateY(-120vh) rotate(360deg); opacity: 0; }
+        }
+
+        #main-content { padding-top: 50px; position: relative; z-index: 100; }
+        h1 { font-size: 3em; color: #ff85a2; text-shadow: 0 0 20px #ff4d6d; margin-bottom: 10px; }
+        .mensaje-p { font-size: 1.4em; margin-bottom: 20px; font-weight: 300; }
+        
+        .galeria-principal { display: flex; justify-content: center; gap: 15px; margin: 25px; }
+        .galeria-principal img { 
+            width: 160px; height: 210px; 
+            object-fit: cover; border-radius: 20px; 
+            border: 3px solid #ff4d6d;
+            box-shadow: 0 0 25px rgba(255, 77, 109, 0.6);
+        }
+
+        .botones { margin-top: 30px; position: relative; height: 100px; }
+        .si { 
+            background: #ff4d6d; color: white; 
+            padding: 18px 50px; border-radius: 60px; 
+            border: none; font-weight: bold; cursor: pointer; 
+            box-shadow: 0 0 30px #ff4d6d; font-size: 1.3em;
+        }
+        .no { background: #333; color: #aaa; padding: 10px 25px; border-radius: 50px; border: none; position: fixed; cursor: pointer; }
+
+        #galaxy-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: black; display: none; z-index: 300;
+            justify-content: center; align-items: center;
+        }
+
+        #final-content {
+            display: none; z-index: 400; text-align: center;
+            flex-direction: column; justify-content: center; align-items: center;
+            width: 100%; height: 100%;
+        }
+
+        video { 
+            width: 80%; max-width: 300px; 
+            border-radius: 20px; box-shadow: 0 0 40px #ff4d6d; 
+            z-index: 410; margin-top: 20px;
+        }
+
+        canvas { position: absolute; top: 0; left: 0; z-index: 310; }
+    </style>
+</head>
+<body>
+
+<div id="pantalla-inicio">
+    <button class="btn-entrar" onclick="comenzar()">❤️</button>
+    <p style="color: #ff85a2; font-size: 1.2em; font-weight: bold;">Toca el corazón, Negrita</p>
+</div>
+
+<audio id="musicaFondo" loop>
+    <source src="musica.mp3" type="audio/mpeg">
+</audio>
+
+<div class="stars"></div>
+
+<div id="main-content">
+    <h1>Negrita, mi universo infinito 🌌❤️</h1>
+    <p class="mensaje-p">Eres mi mejor decisión y mi lugar seguro.</p>
+    <div class="galeria-principal">
+        <img src="foto1.jpeg">
+        <img src="foto2.jpeg">
+        <img src="foto3.jpeg">
+    </div>
+    <h2>¿Quieres ser mi San Valentín? 💍</h2>
+    <div class="botones">
+        <button class="si" onclick="explotarGalaxia()">¡Sí, mi amor! 💖</button>
+        <button class="no" id="btnNo" onmouseover="moverNo()">No 😢</button>
+    </div>
+</div>
+
+<div id="galaxy-overlay">
+    <canvas id="canvas"></canvas>
+    <div id="final-content">
+        <h1 style="color: white; font-size: 2.2em; text-shadow: 0 0 15px #ff4d6d; margin: 0; z-index: 450;">¡SÍ! ¡TE AMO INFINITO! ✨</h1>
+        <video id="miVideo" controls>
+            <source src="video.mp4" type="video/mp4">
+        </video>
+    </div>
+</div>
+
+<script>
+    const musica = document.getElementById("musicaFondo");
+
+    function comenzar() {
+        document.getElementById("pantalla-inicio").style.display = "none";
+        musica.play();
+        
+        // Ráfaga inmediata de corazones
+        for(let i=0; i<10; i++) {
+            setTimeout(() => crearElementoFlotante('corazon'), i * 150);
+        }
+        
+        // Lluvia constante
+        setInterval(() => crearElementoFlotante('corazon'), 200);
+    }
+
+    function crearElementoFlotante(tipo) {
+        const el = document.createElement('div');
+        el.classList.add('floating');
+        
+        const lado = Math.random() > 0.5 ? 'izq' : 'der';
+        // Ajustamos para que floten más a los lados y no tapen el centro
+        let randomX = lado === 'izq' ? Math.random() * 25 : 75 + (Math.random() * 20);
+
+        if (tipo === 'corazon') {
+            el.innerHTML = '❤️';
+            const esGris = Math.random() > 0.5;
+            el.style.color = esGris ? 'rgba(180, 180, 180, 0.4)' : 'rgba(255, 105, 180, 0.5)';
+            el.style.fontSize = Math.random() * 25 + 15 + 'px';
+        } else {
+            const img = document.createElement('img');
+            // SELECCIONA ALEATORIAMENTE DE FOTO1 A FOTO9
+            const num = Math.floor(Math.random() * 9) + 1; 
+            img.src = `foto${num}.jpeg`;
+            img.classList.add('floating-img');
+            el.appendChild(img);
+        }
+
+        el.style.left = randomX + 'vw';
+        el.style.animationDuration = (Math.random() * 4 + 6) + 's';
+        document.body.appendChild(el);
+        setTimeout(() => el.remove(), 9000);
+    }
+
+    function moverNo() {
+        const btn = document.getElementById("btnNo");
+        btn.style.left = Math.random() * (window.innerWidth - 100) + "px";
+        btn.style.top = Math.random() * (window.innerHeight - 50) + "px";
+    }
+
+    function explotarGalaxia() {
+        document.getElementById("galaxy-overlay").style.display = "flex";
+        const canvas = document.getElementById("canvas");
+        const ctx = canvas.getContext("2d");
+        canvas.width = window.innerWidth; canvas.height = window.innerHeight;
+
+        let particles = [];
+        for (let i = 0; i < 500; i++) {
+            particles.push({
+                x: canvas.width / 2, y: canvas.height / 2,
+                vx: (Math.random() - 0.5) * 45, vy: (Math.random() - 0.5) * 45,
+                size: Math.random() * 7, color: "#ff85a2"
+            });
+        }
+
+        function animate() {
+            ctx.fillStyle = "rgba(0, 0, 0, 0.3)";
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            particles.forEach((p, i) => {
+                p.x += p.vx; p.y += p.vy; p.size *= 0.92;
+                ctx.beginPath(); ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+                ctx.fillStyle = p.color; ctx.fill();
+                if (p.size < 0.2) particles.splice(i, 1);
+            });
+
+            if (particles.length > 0) requestAnimationFrame(animate);
+            else {
+                canvas.style.display = "none";
+                document.getElementById("final-content").style.display = "flex";
+                document.getElementById("miVideo").play();
+                
+                // INICIA LA LLUVIA DE TUS 9 FOTOS
+                setInterval(() => crearElementoFlotante('foto'), 1200);
+            }
+        }
+        animate();
+    }
+</script>
+</body>
+</html>
